@@ -297,12 +297,29 @@ action at the right time, might be more profitable than working for 20
 years. I'm hoping to predict the actual home sale price with all housing
 related feature plus tech sector stock price for bayarea's house price.
 
+This type of problem is normally solved using regression models (with
+variance, linear/polynormial etc). From
+\href{http://iopscience.iop.org/article/10.1088/1757-899X/263/4/042098/pdf}{Multivariant
+models} and
+\href{https://web.stanford.edu/class/cs221/2017/restricted/p-final/ianjones/final.pdf}{Results
+from some commmon machine learning models}, we have more insights on the
+common approachs to solve this problem.
+
     \hypertarget{problem-statement}{%
 \subsection{Problem Statement}\label{problem-statement}}
 
     \begin{enumerate}
 \def\labelenumi{\arabic{enumi}.}
 \tightlist
+\item
+  This is a regression problem (continuous results)
+\item
+  Input of the model will be each house's property value (size, utility,
+  location), transction details (selling price, transaction time) and
+  stock market price (pre-selected companies)
+\item
+  Output of the model should be a number in dollars predicting the
+  current selling price.
 \item
   You are provided with a full list of real estate properties in three
   counties (Los Angeles, Orange and Ventura, California) data in 2016.
@@ -478,18 +495,37 @@ related feature plus tech sector stock price for bayarea's house price.
   `taxdelinquencyyear'
 \end{itemize}
 
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\setcounter{enumi}{6}
+\tightlist
+\item
+  each train.csv data is in shape (90275, 3)
+\item
+  each property.csv is in shape (2985217, 58)\\
+\item
+  Stock info will be gathered from
+  https://finance.yahoo.com/quote/MSFT?p=MSFT on a daily bases
+\end{enumerate}
+
     \hypertarget{solution-statement}{%
 \subsection{Solution Statement}\label{solution-statement}}
 
-    A linear regression model with PCA will be implemented using
-keras/scikit, additional feature might be added in, the bayared model
-will be trained using the model trained from all states with additional
-stock information.
+    mutiple regression model (CNN, Linear model, K-means, polynomial model)
+with PCA will be experimented using keras/scikit, the baseline
+comparsion model will be a simple naive Linear model, for stock info,
+there will be 2 options to test, 1st, treated it as an addtional feature
+that each transaction shares based on its date. the 2nd option will be
+adding another hyper param to give that stock info different weight. it
+does not change the output of this model.
 
     \hypertarget{benchmark-model}{%
 \subsection{Benchmark Model}\label{benchmark-model}}
 
-    \href{https://www.kaggle.com/c/zillow-prize-1/leaderboard}{leader board
+    primay benchmark model will be naive bayes from sckit
+
+if beat by far, will use
+\href{https://www.kaggle.com/c/zillow-prize-1/leaderboard}{leader board
 model (global score)}
 
     \hypertarget{evaluation-metrics}{%
@@ -505,13 +541,16 @@ in the calculation of MAE.
     \hypertarget{project-design}{%
 \subsection{Project Design}\label{project-design}}
 
-    From the info above, we can inferred that a linear model would be best
-to fit this question, with additional tech sector stock market as an
-additional feature, we will start with some standardlization and feature
-extraction PCA, after that will be training using logistic regression
-with regularization, if model not performing well, probably will start
-with half trainied gold model from kaggle then move forward to retrain
-specifically for Bay are
+    From the info above, we can inferred that a regression model would be
+best to fit this question, with additional tech sector stock market as
+an additional feature (weighted or not), we will start with some
+standardlization and feature extraction PCA, after that will be training
+using different model as stated in solution statement and compare their
+results, based on suggestion from reviewer, Xgboost or LightGBM will
+also be added in at the end to further improve result. if those
+customized model does not perform well, we probably will start with half
+trainied gold model from kaggle then move forward to retrain
+specifically for Bay area
 
 
     % Add a bibliography block to the postdoc
